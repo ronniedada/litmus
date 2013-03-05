@@ -1,6 +1,7 @@
 import json
 import time
 from collections import defaultdict
+from couchdbkit import Server, ResourceNotFound
 
 from django.conf import settings as DjangoSettings
 from django.shortcuts import render_to_response
@@ -321,3 +322,46 @@ def get_color(request):
         return HttpResponse("empty result set", status=404)
 
     return HttpResponse(content=objs[0].color)
+
+def _graph_key(testcase, env, base, target, phase="loop"):
+    return ", ".join([ "%s.%s" % (testcase, phase) , env, base, target])
+
+@require_GET
+def get_graphs(request):
+    """REST API to get pdf graph links for the test.
+
+    testcase -- testcase (e.g: 'lucky6')
+    env -- test enviornment (e.g, 'terra')
+    base -- baseline build version (e.g., '2.0.0-1723-rel-enterprise')
+    target -- target build version (e.g., '2.0.0-1723-rel-enterprise')
+
+    Sample request:
+        curl -G http://localhost:8000/litmus/get/graphs \
+            -d "testcase=lucky6&env=terra&base=2.0.0-1723-rel-enterprise&target=2.0.0-1723-rel-enterprise"
+    """
+    try:
+        testcase = request.GET['testcase'].strip()
+        env = request.GET['env'].strip()
+        base = request.GET['base'].strip()
+        target = request.GET['target'].strip()
+    except KeyError, e:
+        return HttpResponse(e, status=400)
+
+    server = Server(DjangoSettings.LITMUS_GRAPH_URL)
+    db_name = testcase.split('-')[0]
+    db = server.get_or_create_db(db_name)
+
+    response = []
+    try:
+        for row in db.view(DjangoSettings.LITMUS_GRAPH_VIEW_PATH,
+                           key=_graph_key(testcase, env, base, target)):
+            time = row['value']['_time']
+            link = "/".join([DjangoSettings.LITMUS_GRAPH_URL,
+                             db_name, row['id'], row['value']['_attachments'].keys()[0]])
+            response.append([time, link])
+    except ResourceNotFound:
+        return HttpResponse(json.dumps(''), mimetype='application/json')
+    except Exception, e:
+        return HttpResponse(e, status=400)
+
+    return HttpResponse(json.dumps(response), mimetype='application/json')

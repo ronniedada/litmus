@@ -10,5 +10,6 @@ urlpatterns = patterns(
     url(r'get/settings$', 'litmus.views.get_settings'),
     url(r'get/tags$', 'litmus.views.get_tags'),
     url(r'post/color/$', 'litmus.views.post_color'),
-    url(r'get/color$', 'litmus.views.get_color')
+    url(r'get/color$', 'litmus.views.get_color'),
+    url(r'get/graphs$', 'litmus.views.get_graphs')
 )

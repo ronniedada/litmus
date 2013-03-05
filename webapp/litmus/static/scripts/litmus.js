@@ -104,6 +104,48 @@ function matchJiraTickets(text) {
     return text;
 }
 
+function showGraphs(data) {
+    /**
+     * Show graphs base on the json response
+     */
+    $('#graph-error').dialog({
+        autoOpen: false,
+        modal: true,
+        width: 350,
+        buttons: {
+            Ok: function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    $('#graph-picker').dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $(this).dialog("close");
+            }
+        },
+        open: function() {
+            if (data === null || data.length === 0) {
+                $('#graph-picker table tbody').val("Graph not avaiable");
+            }
+            $('#graph-picker table tbody').val("");
+            $.each(data, function(i, v) {
+                var tr = '<tr><td>' + v[0] + '</td><td><a href=' + v[1] + '> View' + '</td></tr>';
+                $('#graph-picker table tbody').append(tr);
+            });
+        }
+    });
+
+    if (data === null || data.length === 0){
+        $("#graph-error").dialog("open");
+    } else {
+        $("#graph-picker").dialog("open");
+    }
+}
+
 function regTdActions(data, target, col, comment) {
     /**
      * Register actions to each table cell
@@ -147,7 +189,7 @@ function regTdActions(data, target, col, comment) {
                 }
             }
         },
-        {'Comment': function(menuItem, cmenu, e) {
+        {'Comment...': function(menuItem, cmenu, e) {
                 $('#comment-form').dialog({
                     autoOpen: false,
                     modal: true,
@@ -182,6 +224,24 @@ function regTdActions(data, target, col, comment) {
                     }
                 });
                 $("#comment-form").dialog("open");
+            }
+        },
+        {'Graphs...': function(menuItem, cmenu, e) {
+                $.ajax({
+                    type: 'GET',
+                    url: '../get/graphs',
+                    data: {'testcase': testcase,
+                           'env': env,
+                           'base': build,
+                           'target': build},
+                    success: function(data) {
+                        showGraphs(data);
+                    },
+                    error: function(response) {
+                        console.error(response.responseText);
+
+                    }
+                });
             }
         }
     ];

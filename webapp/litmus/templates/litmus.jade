@@ -29,3 +29,12 @@ block main
             p(style='text-align: center', id='loading') Loading
     #comment-form(title='Edit comment', style="display:none")
         textarea(rows=5, cols=35)
+    #graph-picker(title='Graphs', style='display:none')
+        table(class='ui-widget ui-widget-content')
+            thead
+                tr(class='ui-widget-header')
+                    th Upload Time
+                    th Link
+            tbody
+    #graph-error(title='Oops...', style='display:none')
+        p Graphs are not available.
