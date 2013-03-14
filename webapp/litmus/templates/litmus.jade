@@ -12,6 +12,9 @@ block include
     script(charset='utf-8')
         $(document).ready(function(){
             getAllTags();
+            $(function() {
+               $("#type").buttonset();
+            });
             showResults("");
             setReloadInterval('300000');
         });
@@ -19,6 +22,13 @@ block include
 block main
     #tag
         input(type='radio', name='tag', onclick="showResults('');", id="all")label(for="all") All
+    #type
+        input(type='radio', name='type', onclick="showResults('type=all');", id="typeAll")label(for="typeAll") All
+        input(type='radio', name='type', onclick="showResults('');", id="typePro")label(for="typePro") Production
+        input(type='radio', name='type', onclick="showResults('type=exp');", id="typeExp")label(for="typeExp") Experimental
+        input(type='radio', name='type', onclick="showResults('type=kv');", id="typeKV")label(for="typeKV") KV
+        input(type='radio', name='type', onclick="showResults('type=view');", id="typeView")label(for="typeView") View
+        input(type='radio', name='type', onclick="showResults('type=xdcr');", id="typeXDCR")label(for="typeXDCR") XDCR
     #litmus
         label(for="reload") Reload
         select(name='reload', id='reload', onchange="setReloadInterval(this.value);")
