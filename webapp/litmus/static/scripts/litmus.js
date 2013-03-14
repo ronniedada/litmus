@@ -34,7 +34,7 @@ function getAllTags() {
         function(data) {
             $.each(data, function(i, v) {
                 // input(type='radio', name='tag', onclick="showResults('');", id="2.0.1")label(for="2.0.1") 2.0.1
-                var button = "<input type='radio' name='tag' onclick=\"showResults('" + v + "');\" id='"
+                var button = "<input type='radio' name='tag' onclick=\"showResults('tag=" + v + "');\" id='"
                              + v.replace(/\./g, '-')  + "'><label for='"
                              + v.replace(/\./g, '-') + "'>" + v + "</label>";
                 $('#tag').append(button);
@@ -46,18 +46,10 @@ function getAllTags() {
 
 }
 
-function showResults(tag) {
+function showResults(params) {
     var url, oTable;
-    var params = document.URL.split('?')[1];
-    if (params === undefined) {
-        params = "";
-    }
-    if (tag) {
-        url = '/litmus/get?tag=';
-    } else {
-        url = '/litmus/get?' + params;
-    }
-    $.get(url + tag, { },
+    url = '/litmus/get?' + params;
+    $.get(url, { },
         function(data) {
             processData(data);
             renderTable(data);
