@@ -93,9 +93,23 @@ def post(request):
 def get(request):
     """REST API for getting litmus results.
 
-    Sample request to get all test results:
-        curl http://localhost:8000/litmus/get?all
+    Sample request to get both production and experimental test results:
+        curl http://localhost:8000/litmus/get?type=all
+
+    Sample request to get experimental test results:
+        curl http://localhost:8000/litmus/get?type=exp
+
+    Sample request to get production-wised test results:
         curl http://localhost:8000/litmus/get
+
+    Sample request to get production-wised kv test results:
+        curl http://localhost:8000/litmus/get?type=kv
+
+    Sample request to get production-wised view test results:
+        curl http://localhost:8000/litmus/get?type=view
+
+    Sample request to get production-wised xdcr test results:
+        curl http://localhost:8000/litmus/get?type=xdcr
 
     Sample request to get specific results:
         curl -G http://localhost:8000/litmus/get \
@@ -109,11 +123,23 @@ def get(request):
          ["mixed-2suv", "vesta", "Latency, ms", "2012-10-16 11:16:31",
          "777", ""]]
     """
-    if not request.GET or 'all' in request.GET:
+    if "type" not in request.GET:
+        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_PRODUCTION_TESTS)
+    elif request.GET["type"] == "all":
         objs = TestResults.objects.all()
+    elif request.GET["type"] == "exp":
+        objs = TestResults.objects.exclude(testcase__in=DjangoSettings.LITMUS_PRODUCTION_TESTS)
+    elif request.GET["type"] ==  "kv":
+        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_KV_TESTS)
+    elif request.GET["type"] ==  "view":
+        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_VIEW_TESTS)
+    elif request.GET["type"] == "xdcr":
+        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_XDCR_TESTS)
     else:
-        criteria = dict((key, request.GET[key]) for key in request.GET.iterkeys())
-        objs = TestResults.objects.filter(**criteria)
+        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_PRODUCTION_TESTS)
+    if request.GET:
+        criteria = dict((key, request.GET[key]) for key in request.GET.iterkeys() if key != "type")
+        objs = objs.filter(**criteria)
 
     builds = list(objs.values('build').order_by('build').reverse().distinct())
     for baseline in DjangoSettings.LITMUS_BASELINE:
