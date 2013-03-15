@@ -2,16 +2,36 @@
 
 html(lang='en')
 head
-    link(rel='stylesheet', href='/static/styles/dashboard.css')
     link(rel='stylesheet', href='/static/styles/jquery-ui.css')
+    link(rel='stylesheet', href='/static/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/static/bootstrap/css/bootstrap-select.min.css')
+    link(rel='stylesheet', href='/static/styles/dashboard.css')
     script(src='/static/scripts/jquery-1.7.min.js')
     script(src='/static/scripts/jquery-ui.min.js')
-
+    script(src='https://login.persona.org/include.js')
+    script(src='/static/bootstrap/js/bootstrap.min.js')
+    script(src='/static/bootstrap/js/bootstrap-select.min.js')
     block include
     title
-        | Couchbase Performance Dashboard
+        | Dashboard
 body
-    #main
+
+    div(class='navbar navbar-fixed-top')
+        div(class='navbar-inner')
+            div(class='container-fluid')
+                a(class='brand', href='#') Dashboard
+                select(class='selectpicker span2', onchange='setReloadInterval(this.value);')
+                    option(value='0') Manual
+                    option(value='300000', selected='selected') 5 minutes
+                    option(value='1800000') 30 minutes
+                #type(class='btn-group', data-toggle='buttons-radio')
+                    button(class='btn btn-primary', onclick="showResults('type=all');") All
+                    button(class='btn btn-primary', onclick="showResults('');") Production
+                    button(class='btn btn-primary', onclick="showResults('type=exp');") Experimental
+                    button(class='btn btn-primary', onclick="showResults('type=kv');") KV
+                    button(class='btn btn-primary', onclick="showResults('type=view');") View
+                    button(class='btn btn-primary', onclick="showResults('type=xdcr');") XDCR
+                #tag(class='btn-group', data-toggle='buttons-radio')
+                    button(class='btn btn-primary', onclick="showResults('');") All
+    #main(class='container-fluid')
         block main
-    footer
-        p Copyright Couchbase Inc, 2012 All rights reserved
