@@ -33,9 +33,10 @@ function getAllTags() {
     $.get('/litmus/get/tags',
         function(data) {
             $.each(data, function(i, v) {
-                // button(class='btn btn-primary', onclick="showResults('');", id="tagAll") All
-                var button = "<button class='btn btn-primary' onclick=\"showResults('tag=" + v + "');\">"
-                             + v + "</button>";
+                // input(type='radio', name='tag', onclick="showResults('');", id="2.0.1")label(for="2.0.1") 2.0.1
+                var button = "<input type='radio' name='tag' onclick=\"showResults('tag=" + v + "');\" id='"
+                             + v.replace(/\./g, '-')  + "'><label for='"
+                             + v.replace(/\./g, '-') + "'>" + v + "</label>";
                 $('#tag').append(button);
             });
             $(function() {
@@ -291,7 +292,7 @@ function renderTable(data) {
         "bSortClasses": false
     });
 
-    new FixedHeader(oTable, {'offsetTop' : 40});
+    new FixedHeader(oTable);
 
     $('td', oTable.fnGetNodes()).hover(function() {
         var iCol = $('td').index(this) % colHdrs.length;

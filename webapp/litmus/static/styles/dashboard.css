@@ -1,6 +1,23 @@
 
+body {
+    padding-left: 50px;
+    padding-right: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+header {
+    font: 14px;
+    color: #a52a2a;
+}
+
+footer {
+    padding-top: 50px;
+    fond: 14px;
+    color: #a52a2a;
+}
+
 #litmus {
-    padding-top: 60px;
+    padding-top: 40px;
 }
 
 .red {
@@ -9,6 +26,10 @@
 
 .FixedHeader_Cloned th {
     background-color: #ffffff;
+}
+
+#tag {
+    float: right;
 }
 
 div.comment {
