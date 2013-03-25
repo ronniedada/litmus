@@ -15,7 +15,11 @@ block include
             $(function() {
                $("#type").buttonset();
             });
-            showResults("");
+            var params = document.URL.split('?')[1];
+            if (params === undefined) {
+                params = "";
+            }
+            showResults(params);
             setReloadInterval('300000');
         });
 

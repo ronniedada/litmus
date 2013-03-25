@@ -47,8 +47,7 @@ function getAllTags() {
 }
 
 function showResults(params) {
-    var url, oTable;
-    url = '/litmus/get?' + params;
+    var url = '/litmus/get?' + params;
     $.get(url, { },
         function(data) {
             processData(data);
