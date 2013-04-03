@@ -251,7 +251,10 @@ function renderTable(data) {
     }
 
     oTable = $('#litmus table').dataTable({
-        "sDom": 'Tlfrtip',
+        "sDom": 'T<"clear">lfrtip',
+        "oTableTools": {
+            "sSwfPath": "/media/copy_csv_xls_pdf.swf"
+        },
         'bProcessing': true,
         'bPaginate': true,
         'sPaginationType': 'full_numbers',
