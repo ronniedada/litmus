@@ -108,11 +108,15 @@ LITMUS_ERROR = 0.3
 LITMUS_AVG_RESULTS = False  # average results for multiple runs
 LITMUS_GRAPH_URL = "http://perf-cabinet.hq.couchbase.com:5984"
 LITMUS_GRAPH_VIEW_PATH = "litmus/default"
-LITMUS_KV_TESTS = ["mixed-2suv", "read-2suv", "write-2suv", "reb-1",
-                   "reb-1-out", "reb-1-swap", "reb-large-2", "reb-out-large-2",
-                   "mixed-large-4"]
+ORIGINAL_KV_TESTS = ["mixed-2suv", "read-2suv", "write-2suv", "reb-1",
+                     "reb-1-out", "reb-1-swap", "reb-large-2", "reb-out-large-2",
+                     "mixed-large-4"]
+LITMUS_KV_TESTS = ["mixed-litmus", "read-litmus", "write-litmus", "reb-in-litmus",
+                   "reb-out-litmus", "reb-swap-litmus", "reb-in-dgm-litmus", "reb-out-dgm-litmus",
+                   "reb-swap-dgm-litmus"]
 LITMUS_VIEW_TESTS = ["vperf-lnx", "vperf-win", "reb-vperf-10M-in", "reb-vperf-10M-out",
                      "reb-vperf-10M-swap", "reb-vperf-60M-in", "reb-xperf-views",
                      "reb-vperf-8M-in"]
 LITMUS_XDCR_TESTS = [ "xperf-mixed-bi", "xperf-mixed-uni-2-nodes", "xperf-mixed-bi-2-nodes"]
-LITMUS_PRODUCTION_TESTS = LITMUS_KV_TESTS + LITMUS_VIEW_TESTS + LITMUS_XDCR_TESTS
+PRODUCTION_TESTS = LITMUS_KV_TESTS + LITMUS_VIEW_TESTS + LITMUS_XDCR_TESTS
+LITMUS_TESTS = LITMUS_KV_TESTS

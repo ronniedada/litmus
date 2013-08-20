@@ -124,11 +124,11 @@ def get(request):
          "777", ""]]
     """
     if "type" not in request.GET:
-        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_PRODUCTION_TESTS)
+        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_TESTS)
     elif request.GET["type"] == "all":
         objs = TestResults.objects.all()
     elif request.GET["type"] == "exp":
-        objs = TestResults.objects.exclude(testcase__in=DjangoSettings.LITMUS_PRODUCTION_TESTS)
+        objs = TestResults.objects.exclude(testcase__in=DjangoSettings.PRODUCTION_TESTS)
     elif request.GET["type"] ==  "kv":
         objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_KV_TESTS)
     elif request.GET["type"] ==  "view":
@@ -136,7 +136,7 @@ def get(request):
     elif request.GET["type"] == "xdcr":
         objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_XDCR_TESTS)
     else:
-        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_PRODUCTION_TESTS)
+        objs = TestResults.objects.filter(testcase__in=DjangoSettings.PRODUCTION_TESTS)
     if request.GET:
         criteria = dict((key, request.GET[key]) for key in request.GET.iterkeys() if key != "type")
         objs = objs.filter(**criteria)
