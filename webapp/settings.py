@@ -102,7 +102,8 @@ PROXY_DOMAIN = 'localhost'
 PROXY_PORT = 3133
 
 # Default settings for litmus dashboard
-LITMUS_BASELINE = ["2.0.1-170-rel-enterprise", "2.0.0-1976-rel-enterprise", "1.8.1-938-rel-enterprise"]
+LITMUS_BASELINE = ["2.1.0-718-rel-enterprise", "2.0.1-170-rel-enterprise",
+                   "2.0.0-1976-rel-enterprise", "1.8.1-938-rel-enterprise"]
 LITMUS_WARNING = 0.1
 LITMUS_ERROR = 0.3
 LITMUS_AVG_RESULTS = False  # average results for multiple runs
