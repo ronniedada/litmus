@@ -130,7 +130,7 @@ def get(request):
     elif request.GET["type"] == "exp":
         objs = TestResults.objects.exclude(testcase__in=DjangoSettings.PRODUCTION_TESTS)
     elif request.GET["type"] ==  "kv":
-        objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_KV_TESTS)
+        objs = TestResults.objects.filter(testcase__in=DjangoSettings.ORIGINAL_KV_TESTS)
     elif request.GET["type"] ==  "view":
         objs = TestResults.objects.filter(testcase__in=DjangoSettings.LITMUS_VIEW_TESTS)
     elif request.GET["type"] == "xdcr":
